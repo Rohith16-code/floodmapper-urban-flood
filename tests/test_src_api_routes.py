@@ -16,7 +16,7 @@ def test_router_exists():
 @pytest.mark.parametrize(
     "path, expected_status",
     [
-        ("/health", 200),
+        ("/api/v1/health", 200),
     ],
 )
 def test_health_endpoint(client, path, expected_status):

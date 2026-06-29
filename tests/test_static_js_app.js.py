@@ -17,9 +17,8 @@ def test_app_js_file_exists_and_non_empty(app_js_path):
 def test_app_js_contains_expected_api_endpoints(app_js_path):
     content = app_js_path.read_text()
     assert "fetch" in content, "app.js must use fetch for API calls"
-    # Assert presence of at least one known endpoint pattern (e.g., /api/...)
-    # Adjust these endpoint strings based on actual API contracts
-    assert "/api/" in content, "app.js must reference API endpoints"
+    # Assert presence of the exact required endpoint per API contract
+    assert "/api/v1/health" in content, "app.js must reference /api/v1/health endpoint"
 
 
 def test_app_js_contains_fetch_calls_with_expected_paths(app_js_path):

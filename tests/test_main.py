@@ -11,7 +11,7 @@ def test_main_app_exists():
 def test_health_endpoint():
     """Test the health check endpoint."""
     client = TestClient(app)
-    response = client.get("/health")
+    response = client.get("/api/v1/health")
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
 

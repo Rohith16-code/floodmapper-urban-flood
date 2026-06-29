@@ -1,9 +1,10 @@
 import os
+from pathlib import Path
 
 
 def test_index_html_exists():
     """Verify index.html exists and is non-empty."""
-    path = "static/index.html"
+    path = Path("static") / "index.html"
     assert os.path.isfile(path)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -14,7 +15,7 @@ def test_index_html_exists():
 
 def test_css_variables_defined():
     """Verify CSS uses expected design system variables."""
-    path = "static/css/style.css"
+    path = Path("static") / "css" / "style.css"
     assert os.path.isfile(path)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -25,7 +26,7 @@ def test_css_variables_defined():
 
 def test_js_app_exists_and_has_fetch():
     """Verify frontend JS exists and uses fetch API."""
-    path = "static/js/app.js"
+    path = Path("static") / "js" / "app.js"
     assert os.path.isfile(path)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
