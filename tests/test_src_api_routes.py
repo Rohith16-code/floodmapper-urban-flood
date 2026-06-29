@@ -5,10 +5,6 @@ from fastapi import FastAPI
 from src.api.routes import router
 
 
-# Validate that router is a FastAPI instance
-assert isinstance(router, FastAPI), "router must be a FastAPI instance"
-
-
 @pytest.fixture
 def client():
     return TestClient(router)

@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 
 
@@ -9,8 +10,9 @@ def test_index_html_exists():
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
     assert len(content) > 0
-    assert "dashboard" in content.lower()
-    assert "flood" in content.lower()
+    # Use case-insensitive regex to match variations of the words
+    assert re.search(r'\bdashboard\b', content, re.IGNORECASE)
+    assert re.search(r'\bflood\b', content, re.IGNORECASE)
 
 
 def test_css_variables_defined():
