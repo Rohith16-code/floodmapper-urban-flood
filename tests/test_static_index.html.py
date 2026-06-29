@@ -65,16 +65,12 @@ def test_index_html_contains_required_structure(index_html_content):
 
 def test_index_html_contains_api_endpoints(index_html_content):
     """Assert that any referenced backend endpoints from API contracts exist as text in the file"""
-    # Define expected API endpoints (example; adjust to actual contract)
-    # In real usage, these would be imported from api_contracts module
+    # Define expected API endpoints according to the actual API contract
     expected_endpoints = [
-        "/api/v1/users",
-        "/api/v1/dashboard/stats",
-        "/api/v1/notifications"
+        "/api/v1/health"
     ]
 
-    # Check each endpoint appears as a string literal in the HTML (e.g., in JS or data attributes)
+    # Check each endpoint appears as a quoted string in the HTML
     for endpoint in expected_endpoints:
-        # Look for endpoint as a quoted string (simple heuristic for static analysis)
         assert f'"{endpoint}"' in index_html_content or f"'{endpoint}'" in index_html_content, \
             f"Expected API endpoint '{endpoint}' not found in static/index.html"

@@ -23,10 +23,9 @@ def test_app_js_contains_expected_api_endpoints(app_js_path):
 
 def test_app_js_contains_fetch_calls_with_expected_paths(app_js_path):
     content = app_js_path.read_text()
-    # Example: if app.js is expected to call /api/items and /api/health
-    # Adjust endpoints to match actual contract
-    assert "/api/items" in content or "/api/health" in content, \
-        "app.js must reference at least one expected API endpoint"
+    # Adjust endpoints to match actual contract: only /api/v1/health is required
+    assert "/api/v1/health" in content, \
+        "app.js must reference the required API endpoint /api/v1/health"
 
 
 def test_app_js_exports_or_defines_expected_functions(app_js_path):

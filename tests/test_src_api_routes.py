@@ -1,7 +1,12 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
+from fastapi import FastAPI
 from src.api.routes import router
+
+
+# Validate that router is a FastAPI instance
+assert isinstance(router, FastAPI), "router must be a FastAPI instance"
 
 
 @pytest.fixture
