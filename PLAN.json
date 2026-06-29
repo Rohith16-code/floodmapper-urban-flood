@@ -1,0 +1,49 @@
+{
+  "project_name": "real-time-urban-flood-inundation-mapping",
+  "total_tasks": 5,
+  "tasks": [
+    {
+      "file_path": "src/main.py",
+      "purpose": "Entry point with static frontend mount",
+      "dependencies": [],
+      "priority": 0,
+      "status": "pending"
+    },
+    {
+      "file_path": "src/api/routes.py",
+      "purpose": "REST endpoints with standardized schemas",
+      "dependencies": [
+        "src/main.py"
+      ],
+      "priority": 1,
+      "status": "pending"
+    },
+    {
+      "file_path": "static/index.html",
+      "purpose": "Modern responsive dashboard",
+      "dependencies": [
+        "src/api/routes.py"
+      ],
+      "priority": 2,
+      "status": "pending"
+    },
+    {
+      "file_path": "static/css/style.css",
+      "purpose": "Design system with CSS variables",
+      "dependencies": [
+        "static/index.html"
+      ],
+      "priority": 3,
+      "status": "pending"
+    },
+    {
+      "file_path": "static/js/app.js",
+      "purpose": "Fetch-based frontend logic",
+      "dependencies": [
+        "static/index.html"
+      ],
+      "priority": 4,
+      "status": "pending"
+    }
+  ]
+}
