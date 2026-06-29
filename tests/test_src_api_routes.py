@@ -7,6 +7,11 @@ from src.api.routes import router
 
 @pytest.fixture
 def client():
+    # Ensure router is a FastAPI instance for TestClient compatibility
+    if not isinstance(router, FastAPI):
+        app = FastAPI()
+        app.include_router(router)
+        return TestClient(app)
     return TestClient(router)
 
 

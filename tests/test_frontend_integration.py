@@ -10,6 +10,7 @@ def test_health_endpoint_returns_valid_schema():
     data = response.json()
     assert "status" in data
     assert isinstance(data["status"], str)
+    assert data["status"] == "healthy"
 
 def test_dashboard_page_loads_and_contains_required_assets():
     response = client.get("/dashboard")

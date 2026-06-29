@@ -13,11 +13,13 @@ class IndexHTMLParser(HTMLParser):
         self.css_links = []
         self.js_links = []
         self.api_endpoints = []
+        self._in_title = False
 
     def handle_starttag(self, tag, attrs):
         attrs_dict = dict(attrs)
         if tag == "title" and self.title is None:
             self.title = ""
+            self._in_title = True
         elif tag == "main":
             self.has_main = True
         elif tag == "link" and attrs_dict.get("rel") == "stylesheet":
@@ -28,6 +30,14 @@ class IndexHTMLParser(HTMLParser):
             src = attrs_dict.get("src", "")
             if src.startswith("/static/js/app.js"):
                 self.js_links.append(src)
+
+    def handle_endtag(self, tag):
+        if tag == "title":
+            self._in_title = False
+
+    def handle_data(self, data):
+        if self._in_title:
+            self.title += data
 
 
 @pytest.fixture

@@ -1,5 +1,6 @@
 import os
 import pytest
+import re
 from pathlib import Path
 
 
@@ -17,15 +18,18 @@ def test_app_js_file_exists_and_non_empty(app_js_path):
 def test_app_js_contains_expected_api_endpoints(app_js_path):
     content = app_js_path.read_text()
     assert "fetch" in content, "app.js must use fetch for API calls"
-    # Assert presence of the exact required endpoint per API contract
-    assert "/api/v1/health" in content, "app.js must reference /api/v1/health endpoint"
+    # Use regex with word boundaries to ensure /api/v1/health is used in actual fetch calls
+    # Match fetch calls that contain the endpoint as a string argument
+    pattern = r'fetch\s*\(\s*["\']\/api\/v1\/health["\']'
+    assert re.search(pattern, content), "app.js must reference /api/v1/health endpoint in a fetch call"
 
 
 def test_app_js_contains_fetch_calls_with_expected_paths(app_js_path):
     content = app_js_path.read_text()
-    # Adjust endpoints to match actual contract: only /api/v1/health is required
-    assert "/api/v1/health" in content, \
-        "app.js must reference the required API endpoint /api/v1/health"
+    # Use regex to ensure /api/v1/health is used in actual fetch calls
+    pattern = r'fetch\s*\(\s*["\']\/api\/v1\/health["\']'
+    assert re.search(pattern, content), \
+        "app.js must reference the required API endpoint /api/v1/health in a fetch call"
 
 
 def test_app_js_exports_or_defines_expected_functions(app_js_path):
