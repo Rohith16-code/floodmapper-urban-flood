@@ -2,653 +2,534 @@
   "critical_issues": [
     {
       "severity": "critical",
-      "line": 12,
-      "description": "Hardcoded relative path 'static/index.html' will fail if test is run from a different working directory; should use Path(__file__).parent.parent / 'static' / 'index.html' or a configurable base path.",
-      "file": "tests/test_static_assets.py"
-    },
-    {
-      "severity": "critical",
-      "line": 25,
-      "description": "Hardcoded relative path 'static/css/style.css' vulnerable to same working directory issue; should use absolute path resolution relative to test file.",
-      "file": "tests/test_static_assets.py"
-    },
-    {
-      "severity": "critical",
-      "line": 36,
-      "description": "Hardcoded relative path 'static/js/app.js' vulnerable to same working directory issue; should use absolute path resolution relative to test file.",
-      "file": "tests/test_static_assets.py"
-    },
-    {
-      "severity": "critical",
-      "line": 37,
-      "description": "The parser's handle_data method is not implemented, so <title> content is never captured; self.title remains None even if <title> exists.",
-      "file": "tests/test_static_index.html.py"
-    },
-    {
-      "severity": "critical",
-      "line": 49,
-      "description": "The test test_index_html_contains_required_structure asserts parser.title is not None, but due to missing handle_data implementation, it will always fail even with valid <title> tag.",
-      "file": "tests/test_static_index.html.py"
-    },
-    {
-      "severity": "critical",
-      "line": 1,
-      "description": "Missing import for pytest fixture usage; TestClient and FastAPI are imported but router is used without verifying it's a FastAPI instance, risking runtime errors if router is not properly initialized.",
+      "line": 107,
+      "description": "Truncated assertion string: 'not found' in data['det' is incomplete and will cause a SyntaxError.",
       "file": "tests/test_src_api_routes.py"
     },
     {
       "severity": "critical",
-      "line": 35,
-      "description": "Test for /items endpoint does not match documented API contract: no /items endpoint is documented in API CONTRACTS, only /api/v1/health is specified. This test may be testing undocumented/unintended behavior.",
-      "file": "tests/test_src_api_routes.py"
-    },
-    {
-      "severity": "critical",
-      "line": 53,
-      "description": "Test for POST /items does not match documented API contract: no item creation endpoint is documented in API CONTRACTS. This test may be testing undocumented/unintended behavior.",
-      "file": "tests/test_src_api_routes.py"
-    },
-    {
-      "severity": "critical",
-      "line": 73,
-      "description": "Test for GET /items/{item_id} does not match documented API contract: no item retrieval endpoint is documented in API CONTRACTS. This test may be testing undocumented/unintended behavior.",
-      "file": "tests/test_src_api_routes.py"
-    },
-    {
-      "severity": "critical",
-      "line": 22,
-      "description": "Test assertion checks for substring '/api/v1/health' in raw JS source, which is fragile and may produce false positives (e.g., in comments, strings, or unrelated code). Should use more precise parsing (e.g., regex with word boundaries or AST-based analysis) to ensure the endpoint is used in actual fetch calls per API contract.",
+      "line": 27,
+      "description": "The regex pattern in test_app_js_contains_expected_api_endpoints does not account for escaped quotes in strings (e.g., \"\\/api\\/v1\\/health\"), which could cause false negatives in real-world minified or transpiled JS.",
       "file": "tests/test_static_js_app.js.py"
     },
     {
       "severity": "critical",
-      "line": 31,
-      "description": "Redundant test: test_app_js_contains_expected_api_endpoints and test_app_js_contains_fetch_calls_with_expected_paths both assert the same condition ('/api/v1/health' in content). This duplication increases maintenance burden and test noise without adding value.",
+      "line": 34,
+      "description": "test_app_js_contains_fetch_calls_with_expected_paths duplicates the exact logic and pattern of test_app_js_contains_expected_api_endpoints, violating DRY and test uniqueness principles.",
       "file": "tests/test_static_js_app.js.py"
     },
     {
       "severity": "critical",
-      "line": 10,
-      "description": "Test does not validate that 'status' value is non-empty or matches expected values (e.g., 'healthy'). The schema only specifies type 'string', but production tests should enforce semantic correctness.",
+      "line": 46,
+      "description": "The test for exports/functions is overly permissive and will pass for any JS file containing arbitrary variable declarations (e.g., 'const x = 1'), even if no meaningful API logic exists\u2014does not verify actual /api/v1/health usage or function names.",
+      "file": "tests/test_static_js_app.js.py"
+    },
+    {
+      "severity": "critical",
+      "line": 3,
+      "description": "Direct import of app from src.main may cause circular import or side effects during test setup; should use factory pattern or fixture to ensure clean app initialization.",
       "file": "tests/test_frontend_integration.py"
     },
     {
       "severity": "critical",
-      "line": 17,
-      "description": "Test assumes static assets are embedded in HTML as literal paths, but modern frontend builds often use hashed filenames (e.g., /static/css/style.abc123.css). This will cause flaky failures in production.",
+      "line": 11,
+      "description": "Test assumes /api/v1/health returns exactly 'healthy' status, but API contract only specifies 'status' as string; should validate against contract more loosely (e.g., non-empty string) to avoid brittleness.",
       "file": "tests/test_frontend_integration.py"
     },
     {
       "severity": "critical",
-      "line": 23,
-      "description": "The endpoint '/static/index.html' is likely not the correct path for serving the main dashboard; the dashboard is served at '/dashboard', and static files should be served via configured static middleware, not directly. This test may pass due to misconfiguration or fail in production.",
+      "line": 19,
+      "description": "Test for /dashboard checks for specific static asset paths in HTML, which couples test to implementation details (file paths, build artifacts); should instead verify presence of required UI elements or use content-negotiation (e.g., check for expected text or structured data).",
       "file": "tests/test_frontend_integration.py"
     },
     {
       "severity": "critical",
       "line": 1,
-      "description": "Test file name 'test_static_css_style.css.py' is invalid: pytest will not discover it correctly due to the dot in the filename (Python interprets 'css' as a module name, causing import issues). Should be renamed to 'test_static_css_style.py'.",
+      "description": "Test file name 'test_static_css_style.css.py' is misleading and non-standard; pytest expects test files to end in 'test_*.py' or '*_test.py', and this name suggests it's a CSS file, not a Python test.",
       "file": "tests/test_static_css_style.css.py"
     },
     {
       "severity": "critical",
-      "line": 31,
-      "description": "The assertion logic for CSS variables is flawed: checking for ':root' OR 'var(' is insufficient \u2014 a file may contain 'var()' without ':root' (e.g., in custom property usage), but the test incorrectly passes if *either* is present. More importantly, it does not verify actual variable *definitions* (e.g., '--primary-color: ...'). Should require at least one valid CSS custom property definition.",
+      "line": 22,
+      "description": "The test 'test_css_file_contains_css_variables' incorrectly assumes CSS variables must be defined via ':root' or 'var()'; CSS variables can be defined in any selector (e.g., 'body { --primary: blue; }'), and 'var()' usage alone doesn't confirm variable *definition*.",
       "file": "tests/test_static_css_style.css.py"
     },
     {
       "severity": "critical",
       "line": 42,
-      "description": "Test uses hardcoded '/health' endpoint, but API contract specifies '/api/v1/health'. This will cause test to fail or test incorrect endpoint.",
+      "description": "test_health_endpoint mocks api_router unnecessarily and tests /health instead of the documented /api/v1/health endpoint, violating the API contract.",
       "file": "tests/test_src_main.py"
     },
     {
       "severity": "critical",
-      "line": 44,
-      "description": "Test expects response body {'status': 'healthy'}, but API contract only specifies 'status' as a string field without value constraints. Should verify actual response value matches implementation, not assume 'healthy'.",
+      "line": 51,
+      "description": "test_docs_endpoint_exists checks for /docs but does not verify the actual health endpoint (/api/v1/health) exists as per API contract.",
       "file": "tests/test_src_main.py"
     },
     {
       "severity": "critical",
-      "line": 8,
-      "description": "Module-level mutation of 'app' (app.include_router(router)) causes side effects during import, which violates test isolation and can cause unpredictable behavior when tests run in parallel or when modules are imported multiple times.",
+      "line": 7,
+      "description": "Module-level mutation of app (app.include_router(router)) causes side effects during import, which violates test isolation and can cause unpredictable behavior when tests run in parallel or when the module is imported elsewhere.",
       "file": "tests/test_api_routes.py"
     },
     {
       "severity": "critical",
-      "line": 11,
-      "description": "Test functions directly use a global 'app' instance instead of a fixture, making tests order-dependent and preventing proper cleanup/reset between tests.",
+      "line": 10,
+      "description": "Test functions directly use a global app instance instead of a fixture, making tests non-isolated and dependent on import order/state.",
       "file": "tests/test_api_routes.py"
     },
     {
       "severity": "critical",
-      "line": 18,
-      "description": "Missing /api/v1/health endpoint as required by API contracts; current implementation lacks health check functionality.",
+      "line": 1,
+      "description": "Missing import for 'Path' from 'pathlib' is already present, but the code uses 'Path(__file__)' without ensuring 'Path' is imported \u2014 however, it *is* imported correctly. This is not an issue. The real critical issue is the missing /api/v1/health endpoint required by the API contract.",
       "file": "src/main.py"
     },
     {
       "severity": "critical",
-      "line": 22,
-      "description": "read_dashboard() returns raw HTML content without proper content-type headers (should return HTMLResponse or set media_type='text/html')",
-      "file": "src/main.py"
-    },
-    {
-      "severity": "critical",
-      "line": 23,
-      "description": "read_dashboard() returns error dict instead of 404 HTTP status code when index.html is missing, violating REST conventions and API contract expectations.",
+      "line": 0,
+      "description": "Missing required /api/v1/health endpoint as specified in API contracts.",
       "file": "src/main.py"
     },
     {
       "severity": "critical",
       "line": 1,
-      "description": "Missing import for 'Depends' and 'status' from FastAPI; 'status' is needed for proper HTTP status codes in responses.",
+      "description": "Missing import for HTTPException status_code validation; FastAPI requires explicit status_code parameter in HTTPException for proper error responses, but more critically, the code lacks proper exception handling for database operations that could leak connections.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "critical",
-      "line": 4,
-      "description": "Missing import for 'sqlite3.Error' to handle database-specific exceptions; generic Exception masking can hide critical issues.",
+      "line": 70,
+      "description": "Database connection not closed in case of exception (cursor.execute or fetchall may fail before conn.close()), risking connection leaks.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "critical",
-      "line": 10,
-      "description": "Missing import for 'List' from 'typing' is redundant (already imported), but more critically, 'List' usage in Pydantic models requires 'from typing import List' \u2014 current import is correct, but missing 'Sequence' or 'Tuple' for nested lists like path_coordinates.",
+      "line": 83,
+      "description": "Database connection not closed in case of exception during INSERT operation, risking connection leaks.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "critical",
-      "line": 10,
-      "description": "Missing import for 'Sequence' or 'Tuple' \u2014 'List[List[float]]' should be validated as 'Sequence[Sequence[float]]' for immutability and correctness in type hints.",
-      "file": "src/api_routes.py"
-    },
-    {
-      "severity": "critical",
-      "line": 112,
-      "description": "Incomplete exception handler: the 'except' block is cut off and missing closing parenthesis and raise statement, causing syntax error.",
+      "line": 96,
+      "description": "Database connection not closed in case of exception during SELECT operation in get_inundation_map(), risking connection leaks.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "critical",
-      "line": 112,
-      "description": "Missing health check endpoint '/api/v1/health' as required by API contracts; no implementation present.",
+      "line": 106,
+      "description": "Missing closing parenthesis in HTTPException call (incomplete code), causing syntax error.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "critical",
-      "line": 112,
-      "description": "Missing 'from fastapi import status' and using string-based status codes instead of 'status.HTTP_500_INTERNAL_SERVER_ERROR' for maintainability.",
+      "line": 1,
+      "description": "Missing health check endpoint '/api/v1/health' as required by API contracts.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "critical",
-      "line": 13,
-      "description": "Missing closing </head> tag before <body> \u2014 invalid HTML structure.",
-      "file": "static/index.html"
-    },
-    {
-      "severity": "critical",
-      "line": 32,
-      "description": "Error section uses inline style='display: none;' instead of a class-based approach, violating CSS variable consistency and maintainability.",
-      "file": "static/index.html"
-    },
-    {
-      "severity": "critical",
-      "line": 35,
-      "description": "Footer links lack aria-labels or context; screen readers cannot determine destination purpose (e.g., 'API Docs' vs 'Health JSON').",
-      "file": "static/index.html"
-    },
-    {
-      "severity": "critical",
-      "line": 145,
-      "description": "Incomplete CSS rule: '.text-center' declaration block is missing closing brace and content, causing cascade failure for subsequent rules.",
+      "line": 147,
+      "description": "Incomplete CSS rule: '.text-center {' is missing closing brace and declaration block, causing cascade failure for subsequent rules.",
       "file": "static/css/style.css"
     },
     {
       "severity": "critical",
       "line": 1,
-      "description": "File begins with invalid syntax: triple-quoted string literal (Python-style) and escaped newline characters are not valid JavaScript. This will cause immediate parse failure.",
-      "file": "static/js/app.js"
-    },
-    {
-      "severity": "critical",
-      "line": 3,
-      "description": "DOM object contains over 80 properties with no initialization or usage logic. This indicates incomplete or placeholder code unsuitable for production.",
+      "description": "File begins with invalid syntax: triple-quoted string literal (Python-style) instead of valid JavaScript. This will cause immediate parse failure in all browsers.",
       "file": "static/js/app.js"
     },
     {
       "severity": "critical",
       "line": 2,
-      "description": "No actual application logic is present (e.g., no fetch calls, no DOM manipulation, no event handlers). The file fails to fulfill the dashboard's required functionality.",
+      "description": "DOM object contains over 70 properties, many of which appear to be redundant or misnamed (e.g., evacuationMapProgressLoadStartAbortErrorHandlerTimeoutAbortErrorHandlerTimeoutHandler), indicating likely copy-paste error or incomplete refactoring. This bloats memory and increases maintenance risk.",
+      "file": "static/js/app.js"
+    },
+    {
+      "severity": "critical",
+      "line": 2,
+      "description": "DOM object is declared but never initialized (no document.querySelector calls), so all DOM references will be null, causing runtime errors when used.",
+      "file": "static/js/app.js"
+    },
+    {
+      "severity": "critical",
+      "line": 3,
+      "description": "API_BASE is hardcoded as '/api/v1', but no code is present to actually make API calls (e.g., fetch) or handle the health endpoint response as required by the dashboard.",
       "file": "static/js/app.js"
     }
   ],
   "moderate_issues": [
     {
       "severity": "moderate",
-      "line": 16,
-      "description": "Regex pattern '\\bdashboard\\b' may match unintended substrings (e.g., 'dashboarding'); consider stricter matching or context-aware validation.",
-      "file": "tests/test_static_assets.py"
+      "line": 1,
+      "description": "Module docstring is minimal; should include purpose, scope, and usage notes for test fixtures.",
+      "file": "tests/conftest.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 6,
+      "description": "mock_db fixture returns a generic MagicMock without any realistic interface simulation; could mask missing method calls or incorrect usage in tests.",
+      "file": "tests/conftest.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 10,
+      "description": "mock_redis fixture returns a generic MagicMock without simulating Redis client behavior (e.g., get/set/pipeline); may lead to false-positive tests.",
+      "file": "tests/conftest.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 14,
+      "description": "The router may be a FastAPI instance already; the conditional wrapping it in another app is unnecessary and could mask issues if router is not a standard FastAPI instance.",
+      "file": "tests/test_src_api_routes.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 37,
+      "description": "Test assumes get_items returns exactly one item; lacks test for empty list case.",
+      "file": "tests/test_src_api_routes.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 52,
+      "description": "create_item test does not validate that the function is called with correct parameters beyond the payload (e.g., no validation of user context, db session, etc., if applicable).",
+      "file": "tests/test_src_api_routes.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 67,
+      "description": "Validation error test uses empty payload but does not verify the exact validation error structure beyond status code; should assert on error detail (e.g., 'field required' for 'name').",
+      "file": "tests/test_src_api_routes.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 81,
+      "description": "get_item_by_id side_effect uses ValueError, but FastAPI typically converts exceptions to HTTPException; ensure the router properly handles ValueError or use HTTPException in tests for accuracy.",
+      "file": "tests/test_src_api_routes.py"
     },
     {
       "severity": "moderate",
       "line": 17,
-      "description": "Regex pattern '\\bflood\\b' may match unintended substrings (e.g., 'flooded'); consider stricter matching or context-aware validation.",
-      "file": "tests/test_static_assets.py"
+      "description": "The health endpoint test assumes a fixed response structure, but the API contract specifies only 'status' as a string; it should validate the response schema more robustly (e.g., using Pydantic model parsing or at least checking the key exists and is a string).",
+      "file": "tests/test_main.py"
     },
     {
       "severity": "moderate",
-      "line": 42,
-      "description": "Whitespace-removing check for 'fetch(' is fragile and may miss valid invocations (e.g., 'fetch (') or match false positives (e.g., in comments); better to use AST parsing or more precise regex.",
-      "file": "tests/test_static_assets.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 29,
-      "description": "The fixture index_html_path uses Path('static/index.html') without absolute path resolution; may fail in different working directory contexts (e.g., CI/CD). Should use Path(__file__).parent.parent / 'static' / 'index.html' or similar.",
-      "file": "tests/test_static_index.html.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 56,
-      "description": "The test test_index_html_contains_api_endpoints assumes endpoints appear as quoted strings in HTML, but the API contract does not specify how the frontend consumes the endpoint; this test may be overly prescriptive and brittle if implementation changes (e.g., config file, environment variable).",
-      "file": "tests/test_static_index.html.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 64,
-      "description": "The assertion logic for API endpoints only checks for exact quoted matches, missing cases like template literals (backticks), concatenation, or URL construction patterns (e.g., `API_BASE + '/health'`).",
-      "file": "tests/test_static_index.html.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 8,
-      "description": "Using MagicMock() without specifying return_value or side_effect may lead to tests that pass but don't validate actual behavior; consider using more specific mocks or patching real clients.",
-      "file": "tests/conftest.py"
+      "line": 24,
+      "description": "The static files test checks for a specific string in the HTML body ('real-time-urban-flood-inundation-mapping'), which is brittle and may change independently of functionality; better to verify structural elements (e.g., presence of <html>, <head>, <body>) or use a more stable identifier.",
+      "file": "tests/test_main.py"
     },
     {
       "severity": "moderate",
       "line": 12,
-      "description": "Same as above \u2014 generic MagicMock() for Redis client may hide missing method implementations or incorrect usage in production code.",
-      "file": "tests/conftest.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 20,
-      "description": "Test_health_endpoint uses hardcoded path '/api/v1/health' in parametrize but the fixture-based client may not reflect actual app setup if router is not mounted at root; consider verifying router path prefix alignment.",
-      "file": "tests/test_src_api_routes.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 65,
-      "description": "test_create_item_validation_error assumes 422 for empty payload, but validation behavior depends on Pydantic model definition; should verify model schema matches expectation.",
-      "file": "tests/test_src_api_routes.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 89,
-      "description": "Error message assertion in test_get_item_endpoint for 404 case is fragile: checks for 'not found' or 'Item not found' in detail, but FastAPI default 404 detail is 'Not Found' (not 'Item not found'), suggesting mismatch between exception handling and expected response.",
-      "file": "tests/test_src_api_routes.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 16,
-      "description": "Test assumes exact JSON response structure without validating against the API contract schema (e.g., missing validation that 'status' is a string, not null or other type).",
-      "file": "tests/test_main.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 23,
-      "description": "Test for static files mounts root ('/') but does not verify that the HTML content is valid or matches expected structure; relies on substring match which may be brittle.",
-      "file": "tests/test_main.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 17,
-      "description": "Test uses raw file size check (st_size > 0) but does not validate JS syntax or validity. A non-empty file may still contain invalid JS (e.g., syntax errors), leading to false confidence in production readiness.",
+      "description": "The fixture app_js_path hardcodes the path; should use configurable or environment-aware path to support different environments (e.g., Docker, CI).",
       "file": "tests/test_static_js_app.js.py"
     },
     {
       "severity": "moderate",
-      "line": 43,
-      "description": "Test for function/variable definitions uses overly broad pattern matching (e.g., 'const ' could match strings or comments). This risks false positives and does not verify actual exports or callable functions as required by the dashboard's 'status' widget.",
+      "line": 27,
+      "description": "Regex pattern does not handle template literals (e.g., fetch(`/api/v1/health`) or fetch(`${baseURL}/health`), limiting robustness.",
       "file": "tests/test_static_js_app.js.py"
     },
     {
       "severity": "moderate",
-      "line": 26,
-      "description": "Test does not verify that the '/api/v1/health' endpoint is used with 'fetch' (only presence in file), violating the API contract requirement that fetch be used for API calls.",
+      "line": 46,
+      "description": "The test does not verify that the function(s) defined actually make the required API call; presence of 'export' or 'function' is insufficient to confirm contract compliance.",
       "file": "tests/test_static_js_app.js.py"
     },
     {
       "severity": "moderate",
-      "line": 1,
-      "description": "Missing import for response status code validation (e.g., using httpx or explicit status checks). While pytest handles basic assertions, explicit validation improves clarity and maintainability.",
+      "line": 25,
+      "description": "Test for /static/index.html lacks validation of response content type or body structure; should assert Content-Type header and/or verify HTML structure to ensure correct serving.",
       "file": "tests/test_frontend_integration.py"
     },
     {
       "severity": "moderate",
       "line": 15,
-      "description": "Test checks for exact string matches of asset paths without verifying actual file existence or content-type headers, which could mask missing or misconfigured static file handling.",
+      "description": "Missing validation of response headers (e.g., Content-Type for HTML responses); production tests should verify headers match expected values.",
       "file": "tests/test_frontend_integration.py"
     },
     {
       "severity": "moderate",
-      "line": 23,
-      "description": "The test for design system properties checks for substrings like 'color' anywhere in the file, which may yield false positives (e.g., in comments or strings). Should use regex or more precise parsing to match actual property declarations.",
+      "line": 27,
+      "description": "The test 'test_css_file_contains_expected_design_system_properties' checks for substring presence (e.g., 'color') which may yield false positives (e.g., 'color' in a comment or string literal); should use regex or more precise parsing to detect actual property declarations.",
       "file": "tests/test_static_css_style.css.py"
     },
     {
       "severity": "moderate",
-      "line": 36,
-      "description": "Basic brace/parentheses balancing checks are insufficient for CSS syntax validation \u2014 they ignore nested structures, quoted strings (which may contain braces/parens), and CSS comments. A proper CSS parser (e.g., cssutils) should be used for robust validation.",
+      "line": 35,
+      "description": "Basic brace/parentheses balancing checks are insufficient for robust CSS syntax validation; they ignore nested structures, comments, and quoted strings where braces/parens may appear legitimately.",
       "file": "tests/test_static_css_style.css.py"
     },
     {
       "severity": "moderate",
-      "line": 10,
-      "description": "No handling for file encoding issues \u2014 read_text() defaults to UTF-8, but if the CSS file uses a different encoding (e.g., UTF-16 with BOM), it may raise UnicodeDecodeError. Should specify encoding='utf-8' explicitly and handle exceptions.",
+      "line": 4,
+      "description": "Fixture 'css_file_path' returns a relative path; in production test environments, working directory may vary\u2014should use absolute path resolution (e.g., Path(__file__).parent.parent / 'static' / 'css' / 'style.css') for reliability.",
       "file": "tests/test_static_css_style.css.py"
     },
     {
       "severity": "moderate",
       "line": 28,
-      "description": "test_app_includes_router patches api_router but doesn't verify actual inclusion in app.routes \u2014 patching is unnecessary and misleading since app creation is not mocked; better to test via client or inspect app.routes directly without patching.",
+      "description": "test_app_includes_router inspects app.routes but does not verify the router was added via app.include_router() \u2014 could pass even if router was never attached.",
       "file": "tests/test_src_main.py"
     },
     {
       "severity": "moderate",
-      "line": 38,
-      "description": "test_health_endpoint unnecessarily patches api_router, which may mask issues with router registration or endpoint registration. Patching should be avoided unless mocking external dependencies.",
+      "line": 42,
+      "description": "test_health_endpoint uses patch on api_router which is irrelevant and may mask issues in app setup; health endpoint should be tested directly.",
       "file": "tests/test_src_main.py"
     },
     {
       "severity": "moderate",
-      "line": 51,
-      "description": "test_docs_endpoint_exists checks for 'swagger-ui' or 'redoc' in response text, but FastAPI may render docs without those exact substrings (e.g., via custom templates). More robust to check response.status_code == 200 and verify HTML structure or use /openapi.json instead.",
+      "line": 59,
+      "description": "test_openapi_schema_exists does not verify the presence of the documented /api/v1/health endpoint in the OpenAPI schema, which is required for API contract validation.",
       "file": "tests/test_src_main.py"
     },
     {
       "severity": "moderate",
-      "line": 11,
-      "description": "Missing type hints for test functions and payload dictionaries reduces maintainability and IDE support.",
+      "line": 12,
+      "description": "Test client is instantiated inside each test function instead of using a fixture, leading to redundant setup and reduced maintainability.",
       "file": "tests/test_api_routes.py"
     },
     {
       "severity": "moderate",
-      "line": 43,
-      "description": "Test for validation error (422) does not verify the error response structure (e.g., 'detail' field), which is important for API contract validation.",
+      "line": 4,
+      "description": "Importing app from src.main and modifying it at module level may cause circular import issues or interfere with app initialization logic (e.g., startup events, middleware).",
       "file": "tests/test_api_routes.py"
     },
     {
       "severity": "moderate",
-      "line": 53,
-      "description": "Test for history endpoint does not validate the structure of individual history items (e.g., expected fields like 'timestamp', 'depth'), risking incomplete contract coverage.",
-      "file": "tests/test_api_routes.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 10,
-      "description": "STATIC_DIR resolution may be fragile if application is bundled (e.g., PyInstaller) or run from different working directories; Path(__file__) may not resolve as expected in all deployment scenarios.",
+      "line": 14,
+      "description": "STATIC_DIR resolution may break in packaged/frozen applications (e.g., PyInstaller) because __file__ may not point to the expected location.",
       "file": "src/main.py"
     },
     {
       "severity": "moderate",
-      "line": 21,
-      "description": "read_dashboard() reads entire HTML file into memory on each request; for production, consider caching or using FileResponse for better performance.",
+      "line": 24,
+      "description": "read_dashboard() returns raw HTML as JSON when index.html exists, but returns a dict with 'error' key when missing \u2014 inconsistent response types (should return 404 with error or consistent structure).",
+      "file": "src/main.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 23,
+      "description": "No error handling for file I/O (e.g., permission errors, disk issues) when reading index.html.",
       "file": "src/main.py"
     },
     {
       "severity": "moderate",
       "line": 13,
-      "description": "DEBUG flag derived directly from ENV without validation; could be misleading if ENV is set to non-standard values like 'prod' or 'staging'.",
+      "description": "DEBUG flag derived directly from ENV without validation; could be bypassed if APP_ENV is set to arbitrary non-'development' string (e.g., 'production' vs 'staging' vs 'test') \u2014 should validate against known environments.",
       "file": "src/config/settings.py"
     },
     {
       "severity": "moderate",
       "line": 16,
-      "description": "DATABASE_URL default uses SQLite in development, which may cause accidental usage in production if DATABASE_URL is not set; should be validated or raise error in non-dev environments.",
+      "description": "DATABASE_URL uses a default SQLite path that may be insecure or inappropriate for production; should validate URL scheme and raise if production environment uses SQLite.",
       "file": "src/config/settings.py"
     },
     {
       "severity": "moderate",
-      "line": 28,
-      "description": "API_PORT is cast to int without error handling; if APP_PORT env var is non-numeric, will raise ValueError at import time.",
+      "line": 20,
+      "description": "REDIS_URL default points to localhost; in production this may cause connection failures or unintended local usage \u2014 should validate or require explicit value in non-dev environments.",
       "file": "src/config/settings.py"
     },
     {
       "severity": "moderate",
-      "line": 27,
-      "description": "Pydantic model 'SensorData' uses 'datetime' without timezone awareness; ISO format may cause ambiguity in distributed systems.",
+      "line": 24,
+      "description": "ML_MODEL_PATH uses a hardcoded relative path fallback; should validate existence or provide clear error if not found in production.",
+      "file": "src/config/settings.py"
+    },
+    {
+      "severity": "moderate",
+      "line": 1,
+      "description": "No input validation for datetime fields in models; pydantic validates types but not timezone-awareness, which may cause issues with SQLite's naive datetime storage.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "moderate",
-      "line": 36,
-      "description": "Pydantic model 'EvacuationRoute' uses 'List[List[float]]' without validation of coordinate structure (e.g., [lon, lat] pairs); should enforce length=2 for each coordinate.",
+      "line": 1,
+      "description": "Using raw SQL with string interpolation in INSERT (though using parameterized query here, which is good), but no validation that timestamp is in UTC or consistent timezone handling.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "moderate",
-      "line": 52,
-      "description": "Database connection not closed in case of exception during cursor execution; potential resource leak.",
+      "line": 1,
+      "description": "No rate limiting or input size limits for POST /api/sensors, risking DoS via large payloads.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "moderate",
-      "line": 60,
-      "description": "No input sanitization/validation for 'sensor_id' and 'location' beyond min_length; vulnerable to SQL injection if DB_PATH is user-controlled (though unlikely).",
+      "line": 1,
+      "description": "No pagination support for list endpoints (/api/sensors, /api/inundation), which may cause performance issues as data grows.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "moderate",
-      "line": 74,
-      "description": "No rate limiting or pagination on GET endpoints; may cause performance issues with large datasets.",
+      "line": 1,
+      "description": "No authentication/authorization mechanisms, exposing sensitive flood data endpoints.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "moderate",
-      "line": 82,
-      "description": "Timestamp conversion to ISO format before DB storage may lose microsecond precision depending on SQLite schema; should verify schema uses TEXT/REAL for timestamps.",
+      "line": 1,
+      "description": "Missing database schema validation; no checks for table existence before queries.",
       "file": "src/api/routes.py"
     },
     {
       "severity": "moderate",
-      "line": 112,
-      "description": "Incomplete exception handler: missing 'raise HTTPException(...)' after the 'except' block, causing runtime syntax error.",
-      "file": "src/api/routes.py"
-    },
-    {
-      "severity": "moderate",
-      "line": 10,
-      "description": "Logger level is set to INFO after handler configuration, but the handler inherits the logger's level. Since the logger's level is set after adding the handler, the handler may not respect the intended INFO level in some edge cases (though current order is generally safe, it's better practice to set logger level before adding handlers).",
+      "line": 8,
+      "description": "Logger level is set to INFO after adding handler, but if the logger already exists and has a different level, this will override it unexpectedly. Better to set level before adding handler or use logging.getLogger(name) with explicit level configuration.",
       "file": "src/utils/logger.py"
     },
     {
       "severity": "moderate",
-      "line": 7,
-      "description": "No support for configurable log levels or environment-based verbosity (e.g., DEBUG in dev, INFO in prod), limiting flexibility in production environments.",
+      "line": 6,
+      "description": "Using a mutable default check (if not logger.handlers) is safe here, but the pattern can be fragile in multi-threaded environments where multiple threads may simultaneously detect no handlers and add duplicates. Consider using logging.config.dictConfig or a more robust initialization pattern for production.",
       "file": "src/utils/logger.py"
     },
     {
       "severity": "moderate",
-      "line": 10,
-      "description": "Google Fonts link uses 'display=swap' but no font-display: swap fallback is declared in CSS, risking FOIT (Flash of Invisible Text).",
-      "file": "static/index.html"
+      "line": 13,
+      "description": "Color contrast between --color-primary (#1e6f8c) and --color-neutral-800 (#212529) may fall below WCAG AA 4.5:1 for normal text; verify with contrast checker.",
+      "file": "static/css/style.css"
     },
     {
       "severity": "moderate",
-      "line": 22,
-      "description": "Status card content lacks semantic structure: <div class='status-loading'> should be <p> or <span> for better accessibility and semantics.",
-      "file": "static/index.html"
+      "line": 42,
+      "description": "Missing CSS custom property for --font-weight-* variables; inconsistent font weights may harm readability and accessibility.",
+      "file": "static/css/style.css"
     },
     {
       "severity": "moderate",
-      "line": 27,
-      "description": "Live flood data section uses generic 'Fetching real-time sensor data...' \u2014 should specify data source (e.g., 'Sensors: 12/15 active') or be more precise per design requirements.",
-      "file": "static/index.html"
-    },
-    {
-      "severity": "moderate",
-      "line": 32,
-      "description": "Error section has no role='alert' or aria-live for dynamic error announcements; critical for emergency dashboards.",
-      "file": "static/index.html"
-    },
-    {
-      "severity": "moderate",
-      "line": 132,
-      "description": "Missing responsive viewport meta tag handling: no max-width constraint on container for small screens (e.g., padding-left/right may overflow on mobile); consider adding padding-left/right to container or using media queries.",
+      "line": 70,
+      "description": "Z-index scale lacks values for map layers (e.g., markers, popups), which are critical for the flood mapping dashboard.",
       "file": "static/css/style.css"
     },
     {
       "severity": "moderate",
       "line": 115,
-      "description": "Z-index scale lacks highest-tier values for complex overlays (e.g., modals with dropdowns), risking stacking context issues in production.",
+      "description": "Missing responsive typography scale (e.g., fluid font sizes using clamp() or media queries) for mobile-first design.",
       "file": "static/css/style.css"
     },
     {
       "severity": "moderate",
-      "line": 104,
-      "description": "Missing focus-visible support: --focus-ring uses :focus but not :focus-visible, which may cause inconsistent focus styling in modern browsers (especially for keyboard vs. mouse users).",
-      "file": "static/css/style.css"
-    },
-    {
-      "severity": "moderate",
-      "line": 3,
-      "description": "DOM object uses magic strings as keys but no corresponding selectors or query logic is implemented to bind them to actual DOM elements.",
+      "line": 2,
+      "description": "DOM object uses camelCase for property names but includes many overly granular map state variables (e.g., evacuationMapDragStartX, evacuationMapZoomCenterY) that suggest incomplete abstraction\u2014should be encapsulated in a dedicated map controller class.",
       "file": "static/js/app.js"
     },
     {
       "severity": "moderate",
-      "line": 3,
-      "description": "Excessive and redundant evacuationMap-related properties (e.g., handlers, state flags) suggest over-engineering without clear separation of concerns or modularity.",
+      "line": 2,
+      "description": "DOM object contains no references to widgets mentioned in design (e.g., status widget), and no initialization logic for status card, lastUpdated, or errorContainer\u2014violating the frontend_pages requirement.",
       "file": "static/js/app.js"
     },
     {
       "severity": "moderate",
-      "line": 3,
-      "description": "No input validation, error boundaries, or fallback behavior defined for UI state updates (e.g., statusCard, errorContainer).",
+      "line": 2,
+      "description": "No error handling, loading states, or retry logic for API calls\u2014required for graceful degradation per design checklist.",
+      "file": "static/js/app.js"
+    },
+    {
+      "severity": "moderate",
+      "line": 2,
+      "description": "No event listener cleanup (e.g., removeEventListener) for handlers like evacuationMapWheelHandler, risking memory leaks on navigation or re-renders.",
       "file": "static/js/app.js"
     }
   ],
   "suggestions": [
-    "Use pytest's tmp_path fixture or a test configuration to make paths robust and configurable.",
-    "Add type hints to function signatures for better IDE and static analysis support.",
-    "Consider using pathlib's .read_text() method for cleaner file reading.",
-    "Add tests for other required assets (e.g., fonts, icons) if specified in design direction.",
-    "Add tests verifying that CSS variables are used consistently in styles (not just declared).",
-    "Add tests verifying that app.js actually calls /api/v1/health endpoint as per API contract.",
-    "Add error handling for file I/O (e.g., FileNotFoundError) to provide clearer failure messages.",
-    "Consider using pytest fixtures to avoid repeated file reading and path resolution.",
-    "Implement handle_data method in IndexHTMLParser to capture <title> content.",
-    "Use pathlib.Path(__file__).resolve().parent.parent to build absolute paths in fixtures for robustness.",
-    "Add type hints to all functions and class methods (e.g., -> None, -> str).",
-    "Consider using a proper HTML parser library like BeautifulSoup for more robust parsing instead of HTMLParser.",
-    "Add test for empty or malformed HTML to improve test coverage.",
-    "Refactor test_index_html_contains_api_endpoints to verify API usage via configuration or JS source files instead of raw HTML string matching.",
-    "Add pytest markers (e.g., @pytest.mark.html) for better test organization.",
-    "Include encoding='utf-8' explicitly in read_text() \u2014 already done, but consider error handling (e.g., try/except UnicodeDecodeError).",
-    "Consider using `pytest-mock` plugin's `mocker` fixture instead of manual MagicMock creation for better test isolation and cleanup.",
-    "Define and use typed dictionaries or Pydantic models for `sample_patient_data` to improve type safety and maintainability.",
-    "Add `autouse=True` or explicit scope if these fixtures are used across many tests to avoid repetition.",
-    "Document expected methods/attributes on mock objects (e.g., `mock_db.execute.return_value = ...`) in tests to ensure alignment with production code usage.",
-    "Verify that the router includes all endpoints documented in API CONTRACTS; currently only /api/v1/health is documented but tests cover additional endpoints.",
-    "Add type hints to route handlers in src.api.routes for better maintainability and IDE support.",
-    "Consider using pytest fixtures to centralize mocking setup and reduce duplication across tests.",
-    "Add tests for error cases in get_item_by_id (e.g., database connection failures) to ensure robustness.",
-    "Ensure create_item and get_item_by_id functions raise appropriate exceptions (e.g., ValueError for not found) that are correctly caught and converted to HTTP 404 by FastAPI.",
-    "Add integration-style tests that verify actual response bodies match documented schemas (e.g., using pydantic model validation on response data).",
-    "Add schema validation using pydantic models or jsonschema for API responses to ensure compliance with contracts.",
-    "Consider parameterizing or mocking the app fixture to avoid repeated TestClient instantiation.",
-    "Add tests for error cases (e.g., 5xx responses, malformed requests) where applicable.",
-    "Use `response.raise_for_status()` before asserting content to catch unexpected HTTP errors early.",
-    "Add type hints to test functions for better IDE and mypy support.",
-    "Ensure `src.main` is importable in test environment without side effects (e.g., no startup hooks that require DB connections).",
-    "Replace substring checks with regex or AST-based parsing to ensure endpoints are used in actual fetch() calls (e.g., `fetch('/api/v1/health')`).",
-    "Consolidate redundant tests to avoid duplication and improve maintainability.",
-    "Add JS syntax validation (e.g., via `node -c` or `esprima`/`acorn`) to catch syntax errors before deployment.",
-    "Verify that the health endpoint is called during dashboard load (e.g., via module exports or top-level execution) to align with the dashboard's 'status' widget requirement.",
-    "Consider parameterizing endpoint paths from a shared config to avoid hardcoding in both tests and source.",
-    "Add test for HTTP method (e.g., ensure `fetch(..., {method: 'GET'})` is used for /api/v1/health).",
-    "Add assertions to validate 'status' field value (e.g., 'status' == 'healthy') based on expected health check semantics.",
-    "Use regex or partial matching for static asset paths to accommodate hashed filenames (e.g., '/static/css/style\\.[a-f0-9]+\\.css').",
-    "Verify static file serving configuration in FastAPI app (e.g., `app.mount('/static', StaticFiles(directory='static'), name='static')`) and test actual file retrieval.",
-    "Add response headers validation (e.g., Content-Type for HTML/JSON) to ensure correct content negotiation.",
-    "Parameterize tests to cover multiple health states (e.g., simulated failures) if backend supports them.",
-    "Consider adding timeout and retry logic for flaky network conditions in integration tests (though TestClient is in-process, this is still good practice for broader test suites).",
-    "Rename the test file to 'test_static_css_style.py' to comply with pytest naming conventions and avoid import resolution issues.",
-    "Replace substring-based CSS checks with a proper CSS parser (e.g., cssutils) to validate syntax and extract declarations reliably.",
-    "Add type hints to the fixture and test functions for better IDE and mypy support.",
-    "Consider parameterizing tests (e.g., for required_properties) to improve maintainability and coverage.",
-    "Add a test to verify that CSS file is readable and not corrupted (e.g., no binary content).",
-    "Include a test for accessibility-related CSS (e.g., contrast, focus styles) aligned with the '/dashboard' design direction.",
-    "Ensure the test suite is not tightly coupled to file paths \u2014 consider using pytest's tmp_path fixture for isolation in CI environments.",
-    "Update test_health_endpoint to use '/api/v1/health' per API contract.",
-    "Align response assertion in test_health_endpoint to validate actual response value (e.g., assert response.json()['status'] in ['healthy', 'ok', ...] or match implementation exactly).",
-    "Remove unnecessary patches in test_app_includes_router and test_health_endpoint \u2014 they add complexity without benefit.",
-    "Add tests for error cases (e.g., 5xx on health failure if applicable).",
-    "Consider parametrizing endpoint paths from a constants module to avoid duplication and drift.",
-    "Add type hints to all test functions for better IDE and mypy support.",
-    "Add tests for other documented endpoints (e.g., /api/v1/health is the only one listed in contracts).",
-    "Use a pytest fixture to create and configure the app instance per test to ensure isolation and avoid side effects.",
-    "Replace global app usage with a fixture (e.g., @pytest.fixture) that yields a TestClient configured with a fresh app instance.",
-    "Add Pydantic models for request/response schemas and use them in tests to validate against actual contracts.",
-    "Include negative test cases for invalid values (e.g., negative rainfall, invalid location_id format).",
-    "Add tests for the documented /api/v1/health endpoint to ensure it matches the API contract.",
-    "Consider parameterizing tests for multiple valid/invalid payloads to improve coverage and reduce duplication.",
-    "Add /api/v1/health endpoint returning {\"status\": \"healthy\"} with 200 OK",
-    "Use fastapi.responses.HTMLResponse for dashboard endpoint to properly set Content-Type header",
-    "Return HTTP 404 with appropriate error message when dashboard file is missing",
-    "Add type hints to all endpoint functions (e.g., -> dict, -> HTMLResponse)",
-    "Add error handling for file I/O operations (e.g., permission errors, disk issues)",
-    "Consider using environment variable for static directory path to improve deployability",
-    "Add logging for dashboard access failures to aid debugging",
-    "Add response models using Pydantic where applicable for better API documentation",
+    "Consider using `unittest.mock.create_autospec` or defining custom mock classes to better reflect real database/Redis interfaces.",
+    "Add type hints to fixture return types (e.g., `-> MagicMock`) for improved IDE and type checker support.",
+    "Document expected methods/attributes on mock objects in fixture docstrings to guide test writers.",
+    "If actual database or Redis interactions are tested elsewhere, consider adding integration tests with real or containerized services.",
+    "Add `autouse=True` or explicit usage notes if these fixtures are intended to be used across many test modules.",
+    "Add tests for missing endpoints (e.g., 404 on unknown paths) to improve coverage.",
+    "Include tests for other documented endpoints (e.g., PUT/DELETE if applicable) to ensure full contract coverage.",
+    "Use pytest.raises() for exception-based tests instead of side_effect where appropriate for clarity.",
+    "Add type hints to test functions for better IDE support and documentation.",
+    "Consider using @pytest.fixture for mock setup to reduce duplication across tests.",
+    "Verify that the router's error handlers convert ValueError to 404 as expected; if not, update router or adjust test expectations.",
+    "Add test for malformed JSON in POST requests to ensure robustness.",
+    "Ensure all tests use consistent naming and structure (e.g., snake_case for test names).",
+    "Add type hints to test functions (e.g., `def test_main_app_exists() -> None:`) for consistency and IDE support.",
+    "Consider using `@pytest.fixture` for the `TestClient(app)` to avoid repeated instantiation and improve test isolation.",
+    "Add tests for error cases (e.g., unexpected server errors, malformed responses) to ensure robustness.",
+    "Use `response.raise_for_status()` before asserting JSON to catch HTTP errors early.",
+    "Verify that the static file path `/` is intentional \u2014 if the app serves a SPA or index at `/`, consider adding a dedicated `/index.html` route or explicit static file mount test.",
+    "Merge duplicate tests (test_app_js_contains_expected_api_endpoints and test_app_js_contains_fetch_calls_with_expected_paths) into a single, more robust test.",
+    "Add a test to verify that the response schema is handled (e.g., check for .json() or .then() chains after fetch calls to /api/v1/health).",
+    "Use pytest's tmp_path fixture to generate a temporary app.js for testing, avoiding reliance on static file existence.",
+    "Consider using a JS parser (e.g., esprima or acorn via subprocess) instead of regex for more reliable parsing of JS code.",
+    "Add a test to ensure the app.js file is not minified (or handle minified code explicitly) to improve test readability and maintainability.",
+    "Add type hints to function signatures and fixture return types for better IDE and mypy support.",
+    "Include a timeout or error handling for read_text() in case of large files or I/O issues.",
+    "Use pytest fixtures to manage TestClient lifecycle and app state for better isolation and reusability.",
+    "Add type hints to test functions and assertions for improved IDE support and documentation.",
+    "Consider using pydantic models to validate JSON response schemas against the API contracts.",
+    "Add tests for error cases (e.g., 404, 500) to ensure robustness.",
+    "Replace hardcoded static asset path checks with assertions on rendered HTML elements or structured data (e.g., JSON-LD, microdata) to decouple from build pipeline details.",
+    "Rename test file to 'test_static_css_style.py' to follow pytest naming conventions.",
+    "Replace substring-based CSS checks with a proper CSS parser (e.g., `cssutils`) for robust validation.",
+    "Add type hints to fixture and test functions for better IDE and static analysis support.",
+    "Consider adding a test to verify CSS file is readable and not corrupted (e.g., UTF-8 decoding success).",
+    "Document the expected CSS file location relative to project root in README or CI config to avoid path ambiguity.",
+    "Add pytest markers (e.g., @pytest.mark.css) to allow selective test execution.",
+    "Consider adding a test for CSS file size upper bound (e.g., < 1MB) to catch accidental binary inclusion.",
+    "Add a test for the actual /api/v1/health endpoint with correct path and response schema.",
+    "Remove unnecessary mocking in test_health_endpoint; test the real endpoint behavior.",
+    "Verify that app.include_router(api_router) is called during app initialization (e.g., via inspection or integration test).",
+    "Update test_openapi_schema_exists to assert the presence and correctness of the /api/v1/health endpoint in the OpenAPI schema.",
+    "Ensure src/main.py exports only intended public symbols and avoids module-level try/except ImportError.",
+    "Add type hints to all test functions and fixtures for better IDE and mypy support.",
+    "Use a pytest fixture (e.g., @pytest.fixture) to create and configure a fresh app instance per test or per test session.",
+    "Replace module-level app mutation with app factory pattern or fixture-based setup to ensure test isolation.",
+    "Consider using pytest\u2019s built-in TestClient fixture if available (e.g., via pytest-asyncio or custom fixture) to avoid manual TestClient instantiation.",
+    "Add type hints to test functions and payloads for better IDE support and documentation.",
+    "Add parametrized tests for different valid/invalid payloads to improve coverage.",
+    "Verify that the API endpoint paths in tests match exactly those defined in the router (e.g., check for trailing slashes or versioning mismatches).",
+    "Add the required /api/v1/health endpoint returning {\"status\": \"healthy\"}.",
+    "Use FastAPI's FileResponse or return HTMLResponse for static HTML to avoid wrapping in JSON.",
+    "Add type hints to all endpoints (e.g., -> dict, -> HTMLResponse).",
+    "Add HTTPException for error cases (e.g., 404 when dashboard missing).",
+    "Consider using os.environ or config file for static directory path to improve deployability.",
+    "Add logging for dashboard access failures.",
+    "Ensure static directory exists at startup and log a warning if not.",
     "Add type hints for all configuration variables (e.g., using typing.Optional, Literal for ENV).",
-    "Validate required environment variables in production (e.g., DATABASE_URL, ML_MODEL_PATH) and raise clear errors if missing.",
-    "Use pydantic or similar for structured config validation to ensure type safety and better error messages.",
-    "Consider using a config loader (e.g., dynaconf, pydantic-settings) for more robust environment variable handling.",
-    "Add logging or warnings when falling back to defaults, especially for sensitive or production-critical values.",
-    "Ensure ML_MODEL_PATH is validated to exist (at least in production) before app startup.",
-    "Add health check endpoint '/api/v1/health' returning {\"status\": \"healthy\"} as per API contracts.",
-    "Use context managers (e.g., 'with sqlite3.connect(...) as conn') to ensure connections are always closed.",
-    "Replace generic 'Exception' with specific exceptions like 'sqlite3.Error' and log detailed errors for debugging.",
-    "Add input validation for coordinate lists (e.g., using validator with 'each_item=True' in Pydantic).",
-    "Consider using environment variable for DB_PATH validation and fail fast if DB is missing.",
-    "Add OpenAPI tags and summary/description to endpoints for better API documentation.",
-    "Implement pagination for list endpoints (e.g., /api/sensors?limit=100&offset=0).",
-    "Add request validation middleware to log and sanitize inputs before processing.",
-    "Use Pydantic's 'Field' default_factory for timestamps to ensure current time if omitted.",
-    "Add unit tests for database interactions and model validation.",
-    "Consider using `logging.basicConfig()` for simpler initialization or ensure thread-safety if called concurrently in multi-threaded environments.",
-    "Add support for environment variable override (e.g., `LOG_LEVEL`) to allow runtime configuration without code changes.",
-    "Consider adding a `null_handler` fallback or explicit error handling for edge cases where logging might fail.",
-    "Add type hints for return value (already present) and consider using `logging.LoggerAdapter` for structured logging if needed later.",
-    "Ensure the formatter includes `exc_info` and `stack_info` support for better debugging in error scenarios.",
-    "Add a meta description tag for SEO and accessibility context.",
-    "Include a skip-to-content link for keyboard users.",
-    "Replace all aria-busy='true' with dynamic toggling via JS after data fetch.",
-    "Ensure CSS variables are defined for color palette (e.g., --color-alert, --color-success) to meet contrast requirements.",
-    "Add loading skeletons or progress indicators for perceived performance.",
-    "Consider adding a timestamp showing last data refresh time for transparency.",
-    "Add rel='noopener noreferrer' to external links if any (though not applicable here since all are same-origin).",
-    "Ensure app.js initializes error handling and health check polling per API contract.",
-    "Add media queries for responsive breakpoints (e.g., 576px, 768px, 992px, 1200px) to adjust container padding and font sizes.",
-    "Include a dark mode theme using prefers-color-scheme or a toggle class.",
-    "Define explicit focus styles for interactive elements (buttons, links, form controls) using the --focus-ring variable.",
-    "Add a utility class for visually-hidden content (e.g., .sr-only) to improve screen reader accessibility.",
-    "Consider adding CSS custom properties for font weights (e.g., --font-weight-light, --font-weight-bold) to ensure consistent typography hierarchy.",
-    "Ensure all semantic color variables meet WCAG AA contrast ratios (e.g., --color-flood-risk-low #28a745 on white has ~4.5:1 ratio, which is borderline; consider darker shade).",
-    "Add a reset for form element default styles (e.g., button, input, select) to ensure consistent appearance across browsers.",
-    "Include a utility class for overflow-hidden and overflow-auto to support map/scrollable widget containers.",
-    "Replace the invalid string prefix with proper JSDoc-style comment (e.g., `/** ... */`) or remove it entirely.",
-    "Implement DOM element initialization using `document.querySelector()` or similar, and validate existence before use.",
-    "Add error handling for API calls using try/catch with user-facing fallback messages.",
-    "Replace the bloated DOM object with a modular structure (e.g., separate modules for map, status, evacuation).",
-    "Implement the required `/api/v1/health` call in a `fetch()`-based function with async/await and update the status card.",
-    "Add accessibility attributes (e.g., `aria-live`, `role`, `aria-busy`) to dynamic UI components.",
-    "Define and use CSS custom properties for consistent theming instead of hardcoded values.",
-    "Trim redundant evacuation map handler properties\u2014most are unnecessary and not used by standard canvas interaction patterns."
+    "Implement environment validation (e.g., ensure APP_ENV is one of ['development', 'staging', 'production']).",
+    "Add validation for DATABASE_URL to ensure it's not SQLite in production.",
+    "Add validation for ML_MODEL_PATH to check file existence before use.",
+    "Consider using pydantic or dynaconf for structured config validation and type coercion.",
+    "Add logging or warnings when defaults are used instead of environment variables.",
+    "Add docstrings explaining expected format for each environment variable.",
+    "Use contextlib.closing or try/finally to ensure database connections are always closed.",
+    "Add health check endpoint as specified in API contracts.",
+    "Implement proper logging instead of returning raw exception strings in HTTPException details.",
+    "Add input sanitization for string fields (e.g., strip whitespace, validate against allowlists).",
+    "Consider using an async database driver (e.g., asyncpg) for better scalability.",
+    "Add database migrations or schema initialization to ensure tables exist before queries.",
+    "Implement request validation middleware to catch malformed inputs early.",
+    "Add CORS middleware if this API serves frontend from different origin.",
+    "Use Pydantic's BaseModel.model_validate() for explicit validation in handlers.",
+    "Add database connection pooling for production scalability.",
+    "Consider allowing configuration of log level and formatter via parameters for flexibility.",
+    "Add support for environment variable overrides (e.g., LOG_LEVEL) to enable runtime tuning without code changes.",
+    "Use logging.basicConfig() or a dedicated configuration function for more predictable behavior in complex applications.",
+    "Add type hints for handler and formatter to improve IDE support and static analysis.",
+    "Consider adding a null handler fallback for library modules to prevent 'No handler found' warnings.",
+    "Add media query support for responsive spacing (e.g., --spacing-md-sm, --spacing-md-md) using clamp() or @media.",
+    "Include --font-weight-* variables (e.g., --font-weight-light, --font-weight-bold) for semantic typography.",
+    "Add focus-visible polyfill fallback or use :focus-visible instead of :focus for better keyboard navigation.",
+    "Define --color-on-* variables (e.g., --color-on-primary, --color-on-danger) to ensure text contrast on colored backgrounds.",
+    "Add a dark mode theme with --color-scheme: dark; and corresponding variable overrides.",
+    "Include --aspect-ratio-* variables for consistent media container sizing (e.g., maps, charts).",
+    "Add --transition-easing-* variables (e.g., ease-in-out, cubic-bezier) for more precise animation control.",
+    "Ensure all interactive elements have explicit :hover and :active states with visual feedback.",
+    "Replace the invalid triple-quoted string with a proper JSDoc comment block using /** ... */.",
+    "Refactor DOM references into a proper initialization function using document.querySelectorAll and store in a single DOM object.",
+    "Implement the health check API call using fetch with async/await and error handling.",
+    "Add real status display logic (e.g., update statusCard text based on health response).",
+    "Remove redundant/unused map state variables and encapsulate map interaction logic in a separate module.",
+    "Add accessibility attributes (aria-live, role, tabindex) to status and loading elements.",
+    "Define and use CSS custom properties (e.g., --color-status-ok, --font-main) in style.css to support the required color palette and typography.",
+    "Add a proper entry point (e.g., document.addEventListener('DOMContentLoaded', init)) to ensure DOM readiness before manipulation."
   ],
   "files_reviewed": 17
 }
