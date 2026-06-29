@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-06-29T18:52:12.736713",
+  "total_issues": 6,
+  "critical": 0,
+  "issues": [
+    {
+      "file": "static/js/__init__.py",
+      "type": "frontend_api_mismatch",
+      "description": "Frontend references backend endpoint /api/v1/health which does not exist",
+      "fix_hint": "Implement /api/v1/health in backend or remove the reference from frontend"
+    },
+    {
+      "file": "tests/",
+      "type": "missing_dep",
+      "description": "pytest: ==================================== ERRORS ====================================",
+      "fix_hint": "Fix test imports or dependencies"
+    },
+    {
+      "file": "tests/",
+      "type": "missing_dep",
+      "description": "pytest: ___________________ ERROR collecting tests/test_src_main.py ____________________",
+      "fix_hint": "Fix test imports or dependencies"
+    },
+    {
+      "file": "tests/",
+      "type": "missing_dep",
+      "description": "pytest: _____________ ERROR collecting tests/test_static_css_style.css.py ______________",
+      "fix_hint": "Fix test imports or dependencies"
+    },
+    {
+      "file": "tests/",
+      "type": "missing_dep",
+      "description": "pytest: _______________ ERROR collecting tests/test_static_index.html.py _______________",
+      "fix_hint": "Fix test imports or dependencies"
+    },
+    {
+      "file": "tests/",
+      "type": "missing_dep",
+      "description": "pytest: _______________ ERROR collecting tests/test_static_js_app.js.py ________________",
+      "fix_hint": "Fix test imports or dependencies"
+    }
+  ]
+}
