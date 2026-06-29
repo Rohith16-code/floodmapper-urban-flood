@@ -1,0 +1,86 @@
+{
+  "project_name": "real-time-urban-flood-inundation-mapping",
+  "problem_summary": "Urban flooding displaces millions annually, and city emergency managers lack real-time, street-level inundation maps during active flood events. Build a platform that fuses rainfall radar data, IoT water-level sensor streams, OpenStreetMap elevation profiles, and crowdsourced social media reports to generate a live flood depth map updated every 5 minutes. The system should auto-generate dynamic, f",
+  "technology_stack": [
+    "Python 3.11",
+    "FastAPI",
+    "SQLite",
+    "HTML/JS"
+  ],
+  "files_to_create": [
+    {
+      "path": "src/main.py",
+      "purpose": "Entry point with static frontend mount",
+      "component": "api",
+      "dependencies": [],
+      "estimated_lines": 80
+    },
+    {
+      "path": "src/api/routes.py",
+      "purpose": "REST endpoints with standardized schemas",
+      "component": "api",
+      "dependencies": [
+        "src/main.py"
+      ],
+      "estimated_lines": 150
+    },
+    {
+      "path": "static/index.html",
+      "purpose": "Modern responsive dashboard",
+      "component": "frontend",
+      "dependencies": [
+        "src/api/routes.py"
+      ],
+      "estimated_lines": 200
+    },
+    {
+      "path": "static/css/style.css",
+      "purpose": "Design system with CSS variables",
+      "component": "frontend",
+      "dependencies": [
+        "static/index.html"
+      ],
+      "estimated_lines": 200
+    },
+    {
+      "path": "static/js/app.js",
+      "purpose": "Fetch-based frontend logic",
+      "component": "frontend",
+      "dependencies": [
+        "static/index.html"
+      ],
+      "estimated_lines": 150
+    }
+  ],
+  "api_contracts": [
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/health",
+      "description": "Health check",
+      "request_schema": {},
+      "response_schema": {
+        "status": "string"
+      }
+    }
+  ],
+  "data_models": [],
+  "frontend_pages": [
+    {
+      "path": "/dashboard",
+      "purpose": "Main dashboard",
+      "design_direction": "Clean, modern, accessible",
+      "typography": "Nunito + Crimson Pro",
+      "widgets": [
+        "status"
+      ],
+      "api_calls": [
+        "GET /api/v1/health"
+      ]
+    }
+  ],
+  "third_party_libraries": [
+    "fastapi",
+    "uvicorn",
+    "pytest"
+  ]
+}
