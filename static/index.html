@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Real Time Urban Flood Inundation Mapping Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -12,9 +15,27 @@
     <p>Production dashboard — loading live data from backend API...</p>
   </header>
   <main id="app">
-    <section class="card">
+    <section class="card status-card">
       <h2>System Health</h2>
-      <div id="health">Loading...</div>
+      <div id="health" class="status-content">
+        <div class="status-loading" aria-busy="true">Loading system status...</div>
+      </div>
+    </section>
+    <section class="card data-card">
+      <h2>Live Flood Data</h2>
+      <div id="flood-data" class="data-content">
+        <div class="data-loading" aria-busy="true">Fetching real-time sensor data...</div>
+      </div>
+    </section>
+    <section class="card action-card">
+      <h2>Evacuation Router</h2>
+      <div id="evacuation-router" class="action-content">
+        <div class="action-loading" aria-busy="true">Initializing evacuation routing engine...</div>
+      </div>
+    </section>
+    <section class="card error-card" id="error-display" style="display: none;">
+      <h2>Error</h2>
+      <div id="error-message"></div>
     </section>
   </main>
   <footer>
