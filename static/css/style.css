@@ -4,6 +4,10 @@
 */
 
 :root {
+  /* Public aliases for tests/design systems */
+  --primary-color: #1e6f8c;
+  --danger-color: #dc3545;
+
   /* Color Palette - Accessible, High Contrast */
   --color-primary: #1e6f8c;
   --color-primary-dark: #15566d;

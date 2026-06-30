@@ -18,7 +18,8 @@ def test_app_exists():
 def test_root_endpoint(client):
     response = client.get("/")
     assert response.status_code == 200
-    assert "Urban Flood" in response.json()["message"]
+    assert "text/html" in response.headers["content-type"]
+    assert "real-time-urban-flood-inundation-mapping" in response.text.lower()
 
 
 def test_dashboard_endpoint(client):

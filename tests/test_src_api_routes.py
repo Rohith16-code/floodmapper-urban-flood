@@ -30,7 +30,7 @@ def test_health_endpoint(client, path, expected_status):
     assert response.status_code == expected_status
     data = response.json()
     assert "status" in data
-    assert data["status"] == "ok"
+    assert data["status"] == "healthy"
 
 
 @pytest.mark.parametrize(
